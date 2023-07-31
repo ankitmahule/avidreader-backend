@@ -1,8 +1,8 @@
 import { MongoClient } from "mongodb";
-
+import mongoose from "mongoose";
 const connectionString = process.env.DB_URL || "";
 
-const client = new MongoClient(connectionString);
+/* const client = new MongoClient(connectionString);
 
 let conn;
 try {
@@ -13,4 +13,18 @@ try {
 
 let db = conn.db("avidreader");
 
-export default db;
+export default db; */
+
+async function dbConnect() {
+  mongoose
+    .connect(process.env.DB_URL)
+    .then(() => {
+      console.log("Successfully connected to database");
+    })
+    .catch((error) => {
+      console.log("Unable to connect to database");
+      console.error(error);
+    });
+}
+
+export default dbConnect;

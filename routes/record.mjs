@@ -37,7 +37,8 @@ router.post("/register", (req, res) => {
         .catch((e) => {
           if (e.code === 11000) {
             res.status(400).send({
-              message: "Email Id must be unique",
+              message:
+                "Couldn't register user, Email Id/Contact no already exists",
               errorCode: 11000,
             });
           }

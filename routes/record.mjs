@@ -4,16 +4,57 @@ import { ObjectId } from "mongodb";
 import bcrypt from "bcrypt";
 import Users from "../db/userModel.mjs";
 import bodyParser from "body-parser";
-
+import jsonwebtoken from "jsonwebtoken";
 const router = express.Router();
 // const jsonParser = bodyParser.json();
 dbConnect();
 
 // This section will help you get a list of all the records.
-router.get("/users", async (req, res) => {
-  /* let collection = await db.collection("users");
-  let results = await collection.find({}).toArray(); */
-  res.send(results).status(200);
+router.post("/login", async (req, res) => {
+  Users.findOne({ email: req.body.email })
+    .then((user) => {
+      bcrypt
+        .compare(req.body.password, user.password)
+        .then((passwordCheck) => {
+          if (!passwordCheck) {
+            return res.status(400).send({
+              message: "Passwords does not match",
+              errorCode: 11000,
+            });
+          }
+          const token = jsonwebtoken.sign(
+            {
+              userId: user._id,
+              userEmail: user.email,
+            },
+
+            "RANDOM-TOKEN",
+            { expiresIn: "24h" }
+          );
+
+          res.status(200).send({
+            message: "Login successful",
+            status: 200,
+            authToken: token,
+          });
+        })
+        .catch((error) => {
+          if (error.code === 11000) {
+            res.status(400).send({
+              message: `Passwords doesn't match`,
+              errorCode: error.code,
+            });
+          }
+        });
+    })
+    .catch((error) => {
+      if (error.code === 11000) {
+        res.status(400).send({
+          message: `User Email/Contact No. not found`,
+          errorCode: error.code,
+        });
+      }
+    });
 });
 
 router.post("/register", (req, res) => {
@@ -30,7 +71,7 @@ router.post("/register", (req, res) => {
         .save()
         .then(() => {
           res.status(201).send({
-            message: "User created successfully",
+            message: "Account created successfully",
             status: 201,
           });
         })

@@ -1,15 +1,12 @@
 import express from "express";
 import dbConnect from "../db/conn.mjs";
-import { ObjectId } from "mongodb";
 import bcrypt from "bcrypt";
 import Users from "../db/userModel.mjs";
-import bodyParser from "body-parser";
 import jsonwebtoken from "jsonwebtoken";
+
 const router = express.Router();
-// const jsonParser = bodyParser.json();
 dbConnect();
 
-// This section will help you get a list of all the records.
 router.post("/login", async (req, res) => {
   Users.findOne({ email: req.body.email })
     .then((user) => {
@@ -18,7 +15,7 @@ router.post("/login", async (req, res) => {
         .then((passwordCheck) => {
           if (!passwordCheck) {
             return res.status(400).send({
-              message: "Passwords does not match",
+              message: "Login Failed. Invalid Email/Password.",
               errorCode: 11000,
             });
           }
@@ -41,7 +38,7 @@ router.post("/login", async (req, res) => {
         .catch((error) => {
           if (error.code === 11000) {
             res.status(400).send({
-              message: `Passwords doesn't match`,
+              message: `Login Failed. Invalid Email/Password.`,
               errorCode: error.code,
             });
           }
@@ -58,7 +55,6 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/register", (req, res) => {
-  // let collection = await db.collection("users");
   bcrypt
     .hash(req.body.password, 10)
     .then((hashedPassword) => {

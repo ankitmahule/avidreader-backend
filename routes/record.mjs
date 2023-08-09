@@ -36,7 +36,7 @@ router.post("/login", async (req, res) => {
           });
         })
         .catch((error) => {
-          if (error.code === 11000) {
+          if (error) {
             res.status(400).send({
               message: `Login Failed. Invalid Email/Password.`,
               errorCode: error.code,
@@ -45,10 +45,10 @@ router.post("/login", async (req, res) => {
         });
     })
     .catch((error) => {
-      if (error.code === 11000) {
+      if (error) {
         res.status(400).send({
-          message: `User Email/Contact No. not found`,
-          errorCode: error.code,
+          message: `User Email/Contact no. not found`,
+          errorCode: 11000,
         });
       }
     });
@@ -71,12 +71,12 @@ router.post("/register", (req, res) => {
             status: 201,
           });
         })
-        .catch((e) => {
-          if (e.code === 11000) {
+        .catch((error) => {
+          if (error) {
             res.status(400).send({
               message:
                 "Couldn't register user, Email Id/Contact no already exists",
-              errorCode: 11000,
+              errorCode: error.code,
             });
           }
         });

@@ -4,6 +4,7 @@
   "description": "Backend server for CRUD operations on avidreader webapp.",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon server.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

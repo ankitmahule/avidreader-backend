@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 const connectionString = process.env.DB_URL || "";
 
 /* const client = new MongoClient(connectionString);
@@ -26,4 +26,4 @@ async function dbConnect() {
     });
 }
 
-export default dbConnect;
+module.exports = dbConnect;

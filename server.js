@@ -1,8 +1,8 @@
-import express from "express";
-import cors from "cors";
-import "./loadEnvironment.mjs";
-import records from "./routes/record.mjs";
-import bodyParser from "body-parser";
+const express = require("express");
+const cors = require("cors");
+require("./loadEnvironment.js");
+const records = require("./routes/record.js");
+const bodyParser = require("body-parser");
 
 const PORT = process.env.port || 5050;
 

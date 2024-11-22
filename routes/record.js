@@ -1,8 +1,8 @@
-import express from "express";
-import dbConnect from "../db/conn.mjs";
-import bcrypt from "bcrypt";
-import Users from "../db/userModel.mjs";
-import jsonwebtoken from "jsonwebtoken";
+const express = require("express");
+const dbConnect = require("../db/conn.js");
+const bcrypt = require("bcrypt");
+const Users = require("../db/userModel.js");
+const jsonwebtoken = require("jsonwebtoken");
 
 const router = express.Router();
 dbConnect();
@@ -89,4 +89,4 @@ router.post("/register", (req, res) => {
     });
 });
 
-export default router;
+module.exports = router;

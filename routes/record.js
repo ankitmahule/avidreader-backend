@@ -1,7 +1,7 @@
 const express = require("express");
 const dbConnect = require("../db/conn.js");
 const bcrypt = require("bcrypt");
-const Users = require("../db/userModel.js");
+const Users = require("../models/user.js");
 const jsonwebtoken = require("jsonwebtoken");
 
 const router = express.Router();

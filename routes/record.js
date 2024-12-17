@@ -1,4 +1,4 @@
-const express = require("express");
+/* const express = require("express");
 const dbConnect = require("../db/conn.js");
 const bcrypt = require("bcrypt");
 const Users = require("../models/user.js");
@@ -90,3 +90,4 @@ router.post("/register", (req, res) => {
 });
 
 module.exports = router;
+ */

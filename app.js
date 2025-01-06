@@ -9,19 +9,22 @@ const PORT = process.env.port || 5050;
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    credentials: true,
-  })
-);
+const authRouter = require("./routes/auth.js");
+const profileRouter = require("./routes/profile.js");
 
 app.use(express.json());
 app.use(cookieParser());
 
-const authRouter = require("./routes/auth.js");
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+    // methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 
 app.use("/api/v1", authRouter);
+app.use("/api/v1", profileRouter);
 
 dbConnect()
   .then(() => {

@@ -48,6 +48,11 @@ authRouter.post("/login", async (req, res) => {
       .status(200)
       .cookie("token", token, {
         expires: new Date(Date.now() + 8 * 3600000),
+        /*       sameSite: "None",
+        secure: false,
+        path: "/",
+        httpOnly: true,
+        domain: "localhost", */
       })
       .send({
         status: 200,

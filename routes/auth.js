@@ -3,6 +3,8 @@ const authRouter = express.Router();
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 
+const userAuth = require("../middlewares/user-auth");
+
 authRouter.post("/register", async (req, res) => {
   try {
     const { email, password, contactNo } = req.body;
@@ -59,7 +61,7 @@ authRouter.post("/login", async (req, res) => {
   }
 });
 
-authRouter.post("/logout", async (res) => {
+authRouter.post("/logout", userAuth, async (req, res) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),
   });

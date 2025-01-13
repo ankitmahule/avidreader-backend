@@ -28,7 +28,7 @@ authRouter.post("/register", async (req, res) => {
     }
     res.json({ message: "User Added Successfully", data: savedUser });
   } catch (error) {
-    res.status(400).send("Invalid Error" + error);
+    res.status(400).json({ message: error.toString(), errorCode: 400 });
   }
 });
 
@@ -57,7 +57,8 @@ authRouter.post("/login", async (req, res) => {
         data: { email: user.email, id: user._id },
       });
   } catch (error) {
-    res.status(400).send("Invalid Error" + error);
+    console.log(error);
+    res.status(400).json({ message: error.toString(), errorCode: 400 });
   }
 });
 

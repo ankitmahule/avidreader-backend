@@ -11,6 +11,7 @@ const app = express();
 
 const authRouter = require("./routes/auth.js");
 const profileRouter = require("./routes/profile.js");
+const quotesRouter = require("./routes/quotes-route.js");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -24,6 +25,7 @@ app.use(
 
 app.use("/api/v1", authRouter);
 app.use("/api/v1", profileRouter);
+app.use("/api/v1", quotesRouter);
 
 dbConnect()
   .then(() => {

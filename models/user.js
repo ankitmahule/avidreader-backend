@@ -60,12 +60,5 @@ UserSchema.methods.validatePassword = async function (passwordInput) {
   const isPasswordValid = await bcrypt.compare(passwordInput, passwordHash);
   return isPasswordValid;
 };
-/* 
-UserSchema.methods.isUserExists = async function (email) {
-  const user = this;
-  console.log(user);
-  const isUserAlreadyExists = await mongoose.findOne({ email: email });
-  return isUserAlreadyExists;
-}; */
 
 module.exports = mongoose.model("User", UserSchema);

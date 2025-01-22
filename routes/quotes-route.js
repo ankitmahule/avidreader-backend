@@ -4,6 +4,7 @@ const userAuth = require("../middlewares/user-auth");
 const fs = require("fs");
 const Quotes = require("../models/quotes");
 const quotes = require("../models/quotes");
+const User = require("../models/user");
 const { formidable } = require("formidable");
 
 quotesRouter.post("/save-quote", userAuth, async (req, res) => {
@@ -36,13 +37,6 @@ quotesRouter.post("/upload-quote", userAuth, async (req, res) => {
     if (!fileContent) {
       throw new Error("No Content Present");
     }
-    /* const response = quote.uploadQuote(fileName, fileContent);
-    if (!response) {
-      throw new Error("Could not post successfully");
-    } else {
-      console.log(response);
-      res.status(200).json({ message: response.toString(), status: 200 });
-    } */
 
     quote.uploadQuote(fileName, fileContent).then(
       async (response) => {
@@ -71,7 +65,9 @@ quotesRouter.post("/upload-quote", userAuth, async (req, res) => {
 quotesRouter.get("/quotes", userAuth, async (req, res) => {
   try {
     const quotes = await Quotes.find({});
-    res.status(200).json({ quotes });
+    const userId = req.user.id;
+    const userResponse = await User.findOne({ _id: userId }).exec();
+    res.status(200).json({ quotes, email: userResponse.email });
   } catch (error) {
     res.status(400).json({ errorCode: 400, message: error.toString() });
   }

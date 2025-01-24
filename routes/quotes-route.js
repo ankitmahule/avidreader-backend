@@ -16,6 +16,8 @@ quotesRouter.post("/save-quote", userAuth, async (req, res) => {
     const quote = new Quotes({
       content,
       userId,
+      firstName,
+      lastName,
     });
     const saveQuoteResponse = await quote.save();
     if (!saveQuoteResponse) {
@@ -30,6 +32,7 @@ quotesRouter.post("/save-quote", userAuth, async (req, res) => {
 quotesRouter.post("/upload-quote", userAuth, async (req, res) => {
   try {
     const form = formidable();
+    const { firstName, lastName, userId } = req.user;
     const [_, files] = await form.parse(req);
     const quote = new Quotes();
     const fileContent = fs.readFileSync(files.file[0].filepath);
@@ -40,12 +43,12 @@ quotesRouter.post("/upload-quote", userAuth, async (req, res) => {
 
     quote.uploadQuote(fileName, fileContent).then(
       async (response) => {
-        const userId = req.user.id;
         content = response.Location;
-        console.log(response);
         const saveQuote = new Quotes({
           content,
           userId,
+          firstName,
+          lastName,
         });
         quoteSaveResponse = await saveQuote.save();
         if (!quoteSaveResponse) {
@@ -65,9 +68,9 @@ quotesRouter.post("/upload-quote", userAuth, async (req, res) => {
 quotesRouter.get("/quotes", userAuth, async (req, res) => {
   try {
     const quotes = await Quotes.find({});
-    const userId = req.user.id;
-    const userResponse = await User.findOne({ _id: userId }).exec();
-    res.status(200).json({ quotes, email: userResponse.email });
+    // const userId = req?.user?.userId;
+    // const userResponse = await User.findOne({ _id: userId }).exec();
+    res.status(200).json({ quotes });
   } catch (error) {
     res.status(400).json({ errorCode: 400, message: error.toString() });
   }

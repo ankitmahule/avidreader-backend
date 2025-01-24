@@ -21,6 +21,14 @@ const QuotesSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
     photoUrl: {
       type: String,
       default: "https://geographyandyou.com/images/user-profile.png",
@@ -56,7 +64,6 @@ QuotesSchema.methods.uploadQuote = async (fileName, fileContent) => {
     const response = await s3.upload(params).promise();
     return response;
   } catch (error) {
-    console.log(error);
     return error;
   }
 };

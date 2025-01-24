@@ -7,12 +7,14 @@ const userAuth = require("../middlewares/user-auth");
 
 authRouter.post("/register", async (req, res) => {
   try {
-    const { email, password, contactNo } = req.body;
+    const { firstName, lastName, email, password, contactNo } = req.body;
     const passwordHash = await bcrypt.hash(password, 10);
     const user = new User({
       email,
       password: passwordHash,
       contactNo,
+      firstName,
+      lastName,
     });
 
     if (

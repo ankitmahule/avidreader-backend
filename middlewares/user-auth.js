@@ -17,7 +17,12 @@ const userAuth = async (req, res, next) => {
       throw new Error("User not found");
     }
 
-    req.user = user;
+    req.user = {
+      userId: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      photoUrl: user.photoUrl,
+    };
     next();
   } catch (err) {
     res.status(400).send("ERROR: " + err.message);

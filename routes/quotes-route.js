@@ -3,24 +3,48 @@ const quotesRouter = express.Router();
 const userAuth = require("../middlewares/user-auth");
 const fs = require("fs");
 const Quotes = require("../models/quotes");
-const quotes = require("../models/quotes");
-const User = require("../models/user");
 const { formidable } = require("formidable");
 
 quotesRouter.post("/save-quote", userAuth, async (req, res) => {
   try {
-    const { content, userId } = req.body;
-    if (!content) {
-      throw new Error("No Content Present");
+    const form = formidable();
+    const { firstName, lastName, userId } = req.user;
+    const [content, file] = await form.parse(req);
+    if (Object.keys(file).length !== 0) {
+      const fileContent = fs.readFileSync(file.file[0].filepath);
+      const fileName = file.file[0].originalFilename;
+      const quote = new Quotes();
+      quote.uploadQuote(fileName, fileContent).then(
+        async (response) => {
+          const contentImage = response.Location;
+          const saveQuote = new Quotes({
+            content: content.content[0] || "",
+            contentImage: contentImage,
+            userId,
+            firstName,
+            lastName,
+          });
+          const quoteSaveResponse = await saveQuote.save();
+          if (!quoteSaveResponse) {
+            throw new Error("Could not post successfully");
+          }
+          res.status(200).json({ message: "Posted Successfully", status: 200 });
+        },
+        (error) => {
+          throw new Error("Could not post successfully" + error);
+        }
+      );
+      return;
     }
-    const quote = new Quotes({
-      content,
+    const saveQuote = new Quotes({
+      content: content.content[0],
+      contentImage: "",
       userId,
       firstName,
       lastName,
     });
-    const saveQuoteResponse = await quote.save();
-    if (!saveQuoteResponse) {
+    const quoteSaveResponse = await saveQuote.save();
+    if (!quoteSaveResponse) {
       throw new Error("Could not post successfully");
     }
     res.status(200).json({ message: "Posted Successfully", status: 200 });
@@ -29,7 +53,7 @@ quotesRouter.post("/save-quote", userAuth, async (req, res) => {
   }
 });
 
-quotesRouter.post("/upload-quote", userAuth, async (req, res) => {
+/* quotesRouter.post("/upload-quote", userAuth, async (req, res) => {
   try {
     const form = formidable();
     const { firstName, lastName, userId } = req.user;
@@ -63,13 +87,11 @@ quotesRouter.post("/upload-quote", userAuth, async (req, res) => {
   } catch (error) {
     res.status(400).json({ errorCode: 400, message: error.toString() });
   }
-});
+}); */
 
 quotesRouter.get("/quotes", userAuth, async (req, res) => {
   try {
-    const quotes = await Quotes.find({});
-    // const userId = req?.user?.userId;
-    // const userResponse = await User.findOne({ _id: userId }).exec();
+    const quotes = await Quotes.find({}).sort({ createdAt: "desc" });
     res.status(200).json({ quotes });
   } catch (error) {
     res.status(400).json({ errorCode: 400, message: error.toString() });

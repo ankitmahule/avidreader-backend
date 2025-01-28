@@ -17,6 +17,9 @@ const QuotesSchema = new mongoose.Schema(
     content: {
       type: String,
     },
+    contentImage: {
+      type: String,
+    },
     userId: {
       type: String,
       required: true,
@@ -50,16 +53,6 @@ QuotesSchema.methods.uploadQuote = async (fileName, fileContent) => {
       Key: fileName,
       Body: fileContent,
     };
-
-    /* const response = s3.upload(params, (err, data) => {
-      if (err) {
-        console.log(err);
-        throw new Error("Error uploading file:" + err);
-      } else {
-        console.log("success");
-        return `File uploaded successfully. ${data.Location}`;
-      }
-    }); */
 
     const response = await s3.upload(params).promise();
     return response;

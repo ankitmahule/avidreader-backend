@@ -21,4 +21,19 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
   }
 });
 
+profileRouter.put("/profile/bookmark-quote", userAuth, async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const bookmarkDetails = req.body;
+    const userDetails = await User.findById({ _id: userId });
+    userDetails?.bookmarks.push(bookmarkDetails);
+    const response = await User.findByIdAndUpdate(userId, userDetails);
+    if (response) {
+      res.status(200).json({ message: "Quote Bookmarked" });
+    }
+  } catch (error) {
+    res.status(400).json({ errorCode: 400, message: error.toString() });
+  }
+});
+
 module.exports = profileRouter;

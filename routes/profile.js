@@ -15,6 +15,7 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
       firstName: user.firstName,
       lastName: user.lastName,
       photoUrl: user.photoUrl,
+      bookmarks: user.bookmarks,
     });
   } catch (err) {
     res.status(400).send("ERROR : " + err.message);
@@ -24,10 +25,13 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
 profileRouter.put("/profile/bookmark-quote", userAuth, async (req, res) => {
   try {
     const { userId } = req.user;
-    const bookmarkDetails = req.body;
-    const userDetails = await User.findById({ _id: userId });
-    userDetails?.bookmarks.push(bookmarkDetails);
-    const response = await User.findByIdAndUpdate(userId, userDetails);
+    const { quoteId } = req.body;
+    console.log(quoteId);
+    // const userDetails = await User.findById({ _id: userId });
+    //userDetails?.bookmarks.push(quoteId);
+    const response = await User.findByIdAndUpdate(userId, {
+      $push: { bookmarks: quoteId },
+    });
     if (response) {
       res.status(200).json({ message: "Quote Bookmarked" });
     }

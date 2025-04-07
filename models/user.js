@@ -50,7 +50,7 @@ const UserSchema = new mongoose.Schema(
       },
     },
     bookmarks: {
-      type: [{ quoteId: String, isBookmarked: Boolean }],
+      type: [String],
     },
   },
   {

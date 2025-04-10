@@ -49,9 +49,6 @@ const UserSchema = new mongoose.Schema(
         }
       },
     },
-    bookmarks: {
-      type: [String],
-    },
   },
   {
     timestamps: true,

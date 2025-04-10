@@ -98,4 +98,43 @@ quotesRouter.get("/quotes", userAuth, async (req, res) => {
   }
 });
 
+quotesRouter.put("/bookmark-quote", userAuth, async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const { quoteId } = req.body;
+    const quoteDetails = await Quotes.findById({ _id: quoteId });
+    if (!quoteDetails?.bookmarkedBy.includes(userId)) {
+      const response = await Quotes.findByIdAndUpdate(
+        quoteId,
+        {
+          $push: { bookmarkedBy: userId },
+        },
+        { new: true }
+      );
+      if (response) {
+        res.status(200).json({
+          response,
+          message: "Quote Bookmarked",
+        });
+      }
+    } else {
+      const response = await Quotes.findByIdAndUpdate(
+        quoteId,
+        {
+          $pull: { bookmarkedBy: userId },
+        },
+        { new: true }
+      );
+      if (response) {
+        res.status(200).json({
+          response,
+          message: "Bookmarked Removed",
+        });
+      }
+    }
+  } catch (error) {
+    res.status(400).json({ errorCode: 400, message: error.toString() });
+  }
+});
+
 module.exports = quotesRouter;

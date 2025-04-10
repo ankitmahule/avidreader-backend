@@ -18,7 +18,7 @@ const userAuth = async (req, res, next) => {
     }
 
     req.user = {
-      userId: user._id,
+      userId: user._id.toString(),
       firstName: user.firstName,
       lastName: user.lastName,
       photoUrl: user.photoUrl,

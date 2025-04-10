@@ -10,9 +10,8 @@ const QuotesSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    isBookmarked: {
-      type: Boolean,
-      default: false,
+    bookmarkedBy: {
+      type: [String],
     },
     content: {
       type: String,

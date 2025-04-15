@@ -3,8 +3,7 @@ const AWS = require("aws-sdk");
 const QuotesSchema = new mongoose.Schema(
   {
     likes: {
-      type: Number,
-      default: 0,
+      type: [String],
     },
     comments: {
       type: String,

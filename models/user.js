@@ -57,11 +57,9 @@ const UserSchema = new mongoose.Schema(
 
 UserSchema.methods.getJwt = async function () {
   const user = this;
-  const token = await jwt.sign({ _id: user._id }, "Admin@1234$", {
+  return await jwt.sign({ _id: user._id }, "Admin@1234$", {
     expiresIn: "7d",
   });
-
-  return token;
 };
 
 UserSchema.methods.validatePassword = async function (passwordInput) {

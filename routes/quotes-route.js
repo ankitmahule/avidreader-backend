@@ -32,7 +32,7 @@ quotesRouter.post("/save-quote", userAuth, async (req, res) => {
         },
         (error) => {
           throw new Error("Could not post successfully" + error);
-        }
+        },
       );
       return;
     }
@@ -109,7 +109,7 @@ quotesRouter.put("/bookmark-quote", userAuth, async (req, res) => {
         {
           $push: { bookmarkedBy: userId },
         },
-        { new: true }
+        { new: true },
       );
       if (response) {
         res.status(200).json({
@@ -123,7 +123,7 @@ quotesRouter.put("/bookmark-quote", userAuth, async (req, res) => {
         {
           $pull: { bookmarkedBy: userId },
         },
-        { new: true }
+        { new: true },
       );
       if (response) {
         res.status(200).json({

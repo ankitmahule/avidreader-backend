@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "Backend server for CRUD operations on avidreader webapp.",
   "main": "app.js",
+  "engines": {
+    "node": ">=26.5.0 <27",
+    "npm": ">=11"
+  },
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,7 +25,7 @@
   "homepage": "https://github.com/ankitmahule/avidreader-backend#readme",
   "dependencies": {
     "aws-sdk": "^2.1692.0",
-    "bcrypt": "^5.1.0",
+    "bcrypt": "^6.0.0",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -30,5 +35,8 @@
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^8.9.5",
     "validator": "^13.12.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }

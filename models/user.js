@@ -35,11 +35,6 @@ const UserSchema = new mongoose.Schema(
         }
       },
     },
-    contactNo: {
-      type: Number,
-      required: [true, "Please provide a contact number"],
-      unique: [true, "Contact number exists"],
-    },
     photoUrl: {
       type: String,
       default: "https://geographyandyou.com/images/user-profile.png",
@@ -52,7 +47,7 @@ const UserSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 UserSchema.methods.getJwt = async function () {
